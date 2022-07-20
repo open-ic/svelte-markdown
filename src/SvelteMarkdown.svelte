@@ -29,6 +29,18 @@
       tokens = isInline ? lexer.inlineTokens(source) : lexer.lex(source)
     } catch (err) {
       console.log('Error lexing markdown source: ', source, err)
+      // if anything goes wrong just create a single text token
+      tokens = [
+        {
+          type: 'text',
+          raw: source,
+          text: source,
+        },
+      ]
+    }
+
+    if (localStorage.getItem('openchat_trace_lexer') === 'true') {
+      console.debug('Lexed tokens: ', tokens)
     }
 
     dispatch('parsed', { tokens })
